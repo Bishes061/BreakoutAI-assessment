@@ -28,8 +28,37 @@ This project involves developing Python functions to fetch options trading data 
 
 ## Environment Setup
 
-1. **Generate Access Token**: Use `login.py` to authenticate with Upstox API and obtain an access token.
-2. **Store Access Token**: Save the access token in the `.env` file for secure access.
+1. **Generate Authorization Code**: Use the following code to get the authorization URL. This URL is used to generate the initial authorization code for Upstox API access.
+
+    ```python
+    import os
+    import requests
+    import urllib.parse
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
+    apiKey = os.getenv("APIKEY")
+    secretKey = os.getenv("SECRETKEY")
+    ruri = os.getenv("RURI")
+
+    rurl = urllib.parse.quote(ruri, safe="")
+
+    uri = f'https://api.upstox.com/v2/login/authorization/dialog?response_type=code&client_id={apiKey}&redirect_uri={rurl}'
+
+    print(uri)  # GET CODE FROM THE URL
+    ```
+
+2. **Generate Access Token**: After obtaining the code from the URL above, use `login.py` to authenticate with the Upstox API and obtain an access token. This access token is required for further API requests.
+
+3. **Store Access Token**: Save the access token, along with other credentials, in the `.env` file:
+
+    ```dotenv
+    YOUR_ACCESS_TOKEN = 'YOUR_ACCESS_TOKEN'
+    APIKEY = 'YOUR_APIKEY'
+    SECRETKEY = 'YOUR_SECRETKEY'
+    RURI = 'https://127.0.0.1:5000/'
+    ```
 
 ## Files and Functions
 
